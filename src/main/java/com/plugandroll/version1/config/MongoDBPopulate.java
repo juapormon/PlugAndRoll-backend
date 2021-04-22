@@ -1,7 +1,9 @@
 package com.plugandroll.version1.config;
 
+import com.plugandroll.version1.models.Prueba;
 import com.plugandroll.version1.models.TypeRol;
 import com.plugandroll.version1.models.UserEntity;
+import com.plugandroll.version1.repositories.PruebaRepository;
 import com.plugandroll.version1.repositories.UserEntityRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -18,9 +20,10 @@ public class MongoDBPopulate<E> {
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
     @Bean
-    CommandLineRunner commandLineRunner(UserEntityRepository userEntityRepository) {
+    CommandLineRunner commandLineRunner(UserEntityRepository userEntityRepository, PruebaRepository pruebaRepository) {
         return strings -> {
             userEntityRepository.deleteAll();
+            pruebaRepository.deleteAll();
 
             /*================= USERS =================*/
 
@@ -31,6 +34,14 @@ public class MongoDBPopulate<E> {
                     Stream.of(TypeRol.ADMIN, TypeRol.DM).collect(Collectors.toSet()));
 
             userEntityRepository.save(master);
+
+            /*================= PRUEBAS =================*/
+
+            Prueba prueba = new Prueba("Hola que pasa cara pasa");
+            Prueba prueba2 = new Prueba("Aqui estamos cara trucha");
+
+            pruebaRepository.save(prueba);
+            pruebaRepository.save(prueba2);
 
         };
     }
