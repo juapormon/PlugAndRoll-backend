@@ -1,10 +1,10 @@
 package com.plugandroll.version1.models;
 
+import org.springframework.data.annotation.Id;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 
 @Getter
 @Setter
