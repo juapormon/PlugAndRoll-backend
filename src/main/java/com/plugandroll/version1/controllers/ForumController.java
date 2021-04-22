@@ -1,6 +1,7 @@
 package com.plugandroll.version1.controllers;
 
 import com.plugandroll.version1.models.Forum;
+import com.plugandroll.version1.services.ForumService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class ForumController {
     @GetMapping("findBayType/{type}")
     public ResponseEntity<Forum> findByType(@PathVariable String type){
         try{
-            return ResponseEntity.ok(forumService.findByType());
+            return ResponseEntity.ok(forumService.findByType(type));
         }catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
