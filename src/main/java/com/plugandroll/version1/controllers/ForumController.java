@@ -27,6 +27,7 @@ public class ForumController {
 
     }
 
+    //No me gusta este, no me convence el String pero bueno, voy a dejarlo asi en principio
     @GetMapping("findBayType/{type}")
     public ResponseEntity<Forum> findByType(@PathVariable String type){
         try{
