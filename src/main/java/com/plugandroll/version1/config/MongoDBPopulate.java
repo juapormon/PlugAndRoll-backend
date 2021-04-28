@@ -38,10 +38,8 @@ public class MongoDBPopulate<E> {
             /*================= PRUEBAS =================*/
 
             Prueba prueba = new Prueba("Hola que pasa cara pasa");
-            Prueba prueba2 = new Prueba("Aqui estamos cara trucha");
 
             pruebaRepository.save(prueba);
-            pruebaRepository.save(prueba2);
 
         };
     }
