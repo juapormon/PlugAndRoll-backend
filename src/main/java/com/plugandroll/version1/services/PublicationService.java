@@ -23,10 +23,10 @@ public class PublicationService {
     }
 
     public Publication findById(String id){
-        List<Publication> list = publicationRepository.findAll();
-        Publication res = list.stream().filter(p -> p.getId().equals(id)).findAny().get();
-        return res;
+        Publication publication = publicationRepository.findById(id).orElse(null);
+        return publication;
     }
+
     public String addPublication(Publication publication){
         Assert.notNull(publication);
         this.publicationRepository.save(publication);

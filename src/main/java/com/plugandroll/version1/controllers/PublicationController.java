@@ -13,7 +13,7 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/publication")
+@RequestMapping("/publications")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PublicationController {
 
@@ -29,7 +29,7 @@ public class PublicationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Publication> findById (@PathVariable final String id) throws NotFoundException {
+    public ResponseEntity<Publication> findById (@PathVariable final String id) {
         try {
             return ResponseEntity.ok(publicationService.findById(id));
         } catch (IllegalArgumentException e) {

@@ -1,7 +1,9 @@
 package com.plugandroll.version1.config;
 
+import com.plugandroll.version1.models.Publication;
 import com.plugandroll.version1.models.TypeRol;
 import com.plugandroll.version1.models.UserEntity;
+import com.plugandroll.version1.repositories.PublicationRepository;
 import com.plugandroll.version1.repositories.UserEntityRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,9 +21,10 @@ public class MongoDBPopulate<E> {
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
     @Bean
-    CommandLineRunner commandLineRunner(UserEntityRepository userEntityRepository) {
+    CommandLineRunner commandLineRunner(UserEntityRepository userEntityRepository, PublicationRepository publicationRepository) {
         return strings -> {
             userEntityRepository.deleteAll();
+            publicationRepository.deleteAll();
 
             /*================= USERS =================*/
 
@@ -32,6 +36,15 @@ public class MongoDBPopulate<E> {
 
             userEntityRepository.save(master);
 
+            /*================= PUBLICATIONS =================*/
+
+            Publication publication1 = new Publication("Se me ha caido el pan al suelo y mi dragon se lo comió",
+                    LocalDateTime.of(2021, 01, 01, 10, 11, 24),
+                    master
+            );
+            publicationRepository.save(publication1);
         };
+
+
     }
 }
