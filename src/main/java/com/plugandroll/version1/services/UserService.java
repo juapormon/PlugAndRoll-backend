@@ -25,8 +25,8 @@ public class UserService {
 
     }
 
-    public UserEntity updateDeveloper(UserEntity developerToUpdate) {
-        return this.userEntityRepository.save(developerToUpdate);
+    public UserEntity updateUser(UserEntity userToUpdate) {
+        return this.userEntityRepository.save(userToUpdate);
     }
 
     public String login(String username, String password) {
@@ -37,12 +37,16 @@ public class UserService {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
             user = this.userEntityRepository.findByUsername(username).orElse(null);
-            this.updateDeveloper(user);
+            this.updateUser(user);
 
             return jwtTokenProvider.createToken(username, user.getId(), user.getRoles());
         } catch (AuthenticationException e) {
             throw new IllegalArgumentException();
         }
 
+    }
+
+    public UserEntity findByUsername(String username) {
+        return this.userEntityRepository.findByUsername(username).orElse(null);
     }
 }
