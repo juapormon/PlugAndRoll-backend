@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,7 +39,7 @@ public class MongoDBPopulate<E> {
 
             /*================= PRUEBAS =================*/
 
-            Prueba prueba = new Prueba("Hola que pasa cara pasa");
+            Prueba prueba = new Prueba(new String(Files.readAllBytes(Paths.get("C:/Users/juanc/Escritorio/message.txt"))));
 
             pruebaRepository.save(prueba);
 
