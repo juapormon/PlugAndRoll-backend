@@ -25,19 +25,6 @@ public class ForumController {
         }catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-
     }
-
-    //No me gusta este, no me convence el String pero bueno, voy a dejarlo asi en principio
-    @GetMapping("findBayType/{type}")
-    public ResponseEntity<Forum> findByType(@PathVariable String type){
-        try{
-            return ResponseEntity.ok(forumService.findByType(type));
-        }catch (IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-    }
-
-    //No se si poner más servicios para controlor, por ahora voy a dejar estos dos
 
 }
