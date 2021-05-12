@@ -40,7 +40,7 @@ public class PublicationService {
 
     public String addPublication(Publication publication) throws UnauthorizedException {
         Assert.notNull(publication);
-        if(publication.getThread().getCloseDate().equals(null)) {
+        if(publication.getThread().getCloseDate()==null) {
             this.publicationRepository.save(publication);
         }else{
             throw new UnauthorizedException();

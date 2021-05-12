@@ -34,7 +34,7 @@ public class PublicationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Publication> findById (@PathVariable final String id) {
+    public ResponseEntity<Publication> findById(@PathVariable final String id) {
         try {
             return ResponseEntity.ok(publicationService.findById(id));
         } catch (IllegalArgumentException e) {
@@ -43,7 +43,7 @@ public class PublicationController {
     }
 
     @GetMapping("/findByThread/{threadid}")
-    public ResponseEntity<List<Publication>> findByThreadId (@PathVariable final String threadId) {
+    public ResponseEntity<List<Publication>> findByThreadId(@PathVariable final String threadId) {
         try {
             return ResponseEntity.ok(publicationService.findByThreadId(threadId));
         } catch (IllegalArgumentException e) {
@@ -52,7 +52,7 @@ public class PublicationController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addPublication(@PathVariable final Publication publication){
+    public ResponseEntity<String> addPublication(@RequestBody final Publication publication){
         try{
             return ResponseEntity.status(HttpStatus.CREATED).body(publicationService.addPublication(publication));
         }catch (IllegalArgumentException e){
@@ -63,20 +63,20 @@ public class PublicationController {
     }
 
     @PutMapping("/edit/{publicationId}")
-    public ResponseEntity<String> editThread(@AuthenticationPrincipal User principal, @RequestBody Publication publication, @PathVariable String publicationId){
+    public ResponseEntity<String> editPublication(@AuthenticationPrincipal User principal, @RequestBody Publication publication, @PathVariable String publicationId){
         try{
             return ResponseEntity.ok(publicationService.editPublication(principal,publication, publicationId));
         }catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }catch(ChangeSetPersister.NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something you want does not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something is lost or does not exist");
         }catch(UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only admins have that privilege");
         }
     }
 
     @DeleteMapping("/delete/{publicationId}")
-    public ResponseEntity<String> deleteThread(@AuthenticationPrincipal User principal, @PathVariable String publicationId){
+    public ResponseEntity<String> deletePublication(@AuthenticationPrincipal User principal, @PathVariable String publicationId){
         try{
             return ResponseEntity.ok(publicationService.deletePublication(principal, publicationId));
         }catch (IllegalArgumentException e){

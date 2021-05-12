@@ -22,7 +22,6 @@ public class Publication extends  BaseEntity{
     @NotBlank
     private String text;
 
-    @NotBlank
     @Past
     private LocalDateTime date;
 
