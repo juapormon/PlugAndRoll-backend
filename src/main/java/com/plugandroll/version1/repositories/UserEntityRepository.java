@@ -12,5 +12,7 @@ public interface UserEntityRepository extends MongoRepository<UserEntity, String
 
     Optional<UserEntity> findByUsername(String username);
 
+    Optional<UserEntity> findByEmail(String email);
+
     List<UserEntity> findAll();
 }
