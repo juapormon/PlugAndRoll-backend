@@ -3,16 +3,16 @@ package com.plugandroll.version1.controllers;
 import com.plugandroll.version1.dtos.GetUserDTO;
 import com.plugandroll.version1.mappers.UserDTOConverter;
 import com.plugandroll.version1.models.UserEntity;
-import com.plugandroll.version1.services.UserService;
+import com.plugandroll.version1.services.UserEntityService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import com.plugandroll.version1.models.LoginData;
 
 @CrossOrigin("*")
 @RestController
@@ -20,18 +20,27 @@ import java.util.List;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserEntityController {
 
-    private final UserService userService;
+    private final UserEntityService userEntityService;
+
+    @PostMapping("/signup")
+    public ResponseEntity<UserEntity> newDeveloper(@RequestBody UserEntity user) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(this.userEntityService.signup(user));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<String> login(@RequestBody LoginData loginData) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(userService.login(username,password));
+                .body(userEntityService.login(loginData.getUsername(), loginData.getPassword()));
     }
 
     @GetMapping
     public ResponseEntity<List<UserEntity>> getAll() {
         try {
-            return ResponseEntity.ok(userService.getAll());
+            return ResponseEntity.ok(userEntityService.getAll());
         } catch(IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
@@ -42,7 +51,7 @@ public class UserEntityController {
             @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal) {
         try {
             return ResponseEntity.ok(UserDTOConverter
-                    .UserToGetUserDTO(userService.findByUsername(principal.getUsername())));
+                    .UserToGetUserDTO(userEntityService.findByUsername(principal.getUsername())));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
