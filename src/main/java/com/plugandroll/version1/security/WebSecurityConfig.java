@@ -47,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 //.antMatchers("/**").permitAll()
                 .antMatchers("/users/login").permitAll()
+                .antMatchers("/threads/findByForum/*").permitAll()
                 .anyRequest().authenticated();
 
         // If a user try to access a resource without having enough permissions

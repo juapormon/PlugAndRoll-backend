@@ -1,5 +1,6 @@
 package com.plugandroll.version1.models;
 
+import com.plugandroll.version1.dtos.GetUserDTO;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -32,8 +33,8 @@ public class Thread extends BaseEntity{
     @Past
     private LocalDateTime closeDate;
 
-    private List<String> publications;
+    private GetUserDTO creator;
 
-    @DBRef(lazy = true)
-    private UserEntity creator;
+    @DBRef
+    private Forum forum;
 }
