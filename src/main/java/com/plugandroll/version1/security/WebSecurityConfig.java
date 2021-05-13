@@ -48,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/**").permitAll()
                 .antMatchers("/users/login").permitAll()
                 .antMatchers("/users/signup").permitAll()
+                .antMatchers("/forums/findForums").permitAll()
                 .antMatchers("/threads/findByForum/*").permitAll()
                 .anyRequest().authenticated();
 
