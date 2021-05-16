@@ -35,6 +35,8 @@ public class Thread extends BaseEntity{
 
     private GetUserDTO creator;
 
+    private Boolean onlyAuth;
+
     @DBRef
     private Forum forum;
 }

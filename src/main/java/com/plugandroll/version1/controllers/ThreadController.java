@@ -32,9 +32,18 @@ public class ThreadController {
     }
 
     @GetMapping("/findByForum/{forumId}")
-    public ResponseEntity<List<Thread>> findByForum(@PathVariable String forumId){
+    public ResponseEntity<List<Thread>> findByForum(@AuthenticationPrincipal User principal, @PathVariable String forumId){
         try{
-            return ResponseEntity.ok(threadService.findByForum(forumId));
+            return ResponseEntity.ok(threadService.findByForum(principal, forumId));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping("/findByForumNoAuth/{forumId}")
+    public ResponseEntity<List<Thread>> findByForumNoAuth(@PathVariable String forumId){
+        try{
+            return ResponseEntity.ok(threadService.findByForum(null, forumId));
         }catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }

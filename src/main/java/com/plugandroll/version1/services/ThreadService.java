@@ -13,8 +13,10 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -29,8 +31,14 @@ public class ThreadService {
         return res;
     }
 
-    public List<Thread> findByForum(String forumId){
-        List<Thread> res = threadRepository.findByForumId(forumId);
+    public List<Thread> findByForum(User principal, String forumId){
+        List<Thread> res = new ArrayList<>();
+        List<Thread> threads = threadRepository.findByForumId(forumId);
+        if(principal==null) {
+            res.addAll(threads.stream().filter(a -> a.getOnlyAuth() == false).collect(Collectors.toList()));
+        }else{
+            res.addAll(threads);
+        }
         Collections.reverse(res);
         return res;
     }
@@ -41,6 +49,7 @@ public class ThreadService {
         Thread threadToUpdate = this.threadRepository.findById(threadId).orElseThrow(ChangeSetPersister.NotFoundException::new);
         if(me.getUsername().equals(threadToUpdate.getCreator().getUsername())){
             threadToUpdate.setTitle(thread.getTitle());
+            threadToUpdate.setOnlyAuth(thread.getOnlyAuth());
             this.threadRepository.save(threadToUpdate);
         }else{
             throw new UnauthorizedException();
