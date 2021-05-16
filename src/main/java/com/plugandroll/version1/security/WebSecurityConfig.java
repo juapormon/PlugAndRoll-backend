@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/login").permitAll()
                 .antMatchers("/users/signup").permitAll()
                 .antMatchers("/forums/findForums").permitAll()
-                .antMatchers("/threads/findByForum/*").permitAll()
+                .antMatchers("/threads/findByForumNoAuth/*").permitAll()
                 .anyRequest().authenticated();
 
         // If a user try to access a resource without having enough permissions
