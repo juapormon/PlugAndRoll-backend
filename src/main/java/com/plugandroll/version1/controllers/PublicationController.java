@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin("*")
 @RestController
@@ -42,10 +43,19 @@ public class PublicationController {
         }
     }
 
-    @GetMapping("/findByThread/{threadid}")
-    public ResponseEntity<List<Publication>> findByThreadId(@PathVariable final String threadId) {
+    @GetMapping("/findByThread/{threadId}")
+    public ResponseEntity<Set<Publication>> findByThreadId(@AuthenticationPrincipal User principal, @PathVariable final String threadId) {
         try {
-            return ResponseEntity.ok(publicationService.findByThreadId(threadId));
+            return ResponseEntity.ok(publicationService.findByThreadId(principal, threadId));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping("/findByThreadNoAuth/{threadId}")
+    public ResponseEntity<Set<Publication>> findByThreadIdNoAuth(@PathVariable final String threadId) {
+        try {
+            return ResponseEntity.ok(publicationService.findByThreadId(null, threadId));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }

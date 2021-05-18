@@ -26,6 +26,10 @@ public class ForumService {
     private ForumRepository forumRepository;
     private UserEntityRepository userEntityRepository;
 
+    public Forum findById(String id){
+        return this.forumRepository.findById(id).orElseThrow(null);
+    }
+
     public Set<Forum> findByRoleAuth(User principal){
         Set<Forum> res = new HashSet<>();
         List<Forum> allForums = this.forumRepository.findAll();

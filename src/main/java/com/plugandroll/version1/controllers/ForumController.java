@@ -23,6 +23,15 @@ public class ForumController {
 
     private ForumService forumService;
 
+    @GetMapping("/{forumId}")
+    public ResponseEntity<Forum> findById(@PathVariable String forumId){
+        try{
+            return ResponseEntity.ok(forumService.findById(forumId));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
     @GetMapping("/findByRole")
     public ResponseEntity<Set<Forum>> findByRole(@AuthenticationPrincipal User principal){
         try{

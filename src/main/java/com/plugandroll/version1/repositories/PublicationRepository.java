@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface PublicationRepository extends MongoRepository<Publication, String> {
@@ -16,6 +17,6 @@ public interface PublicationRepository extends MongoRepository<Publication, Stri
     Optional<Publication> findById(String id);
 
     @Query("{ 'thread.id' : ?0 }")
-    List<Publication> findByThreadId(String threadId);
+    Set<Publication> findByThreadId(String threadId);
 
 }

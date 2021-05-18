@@ -1,5 +1,6 @@
 package com.plugandroll.version1.controllers;
 
+import com.plugandroll.version1.dtos.GetThreadToCreateDTO;
 import com.plugandroll.version1.models.Thread;
 import com.plugandroll.version1.services.ThreadService;
 import com.plugandroll.version1.utils.UnauthorizedException;
@@ -76,9 +77,9 @@ public class ThreadController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addThread(@AuthenticationPrincipal User principal, @RequestBody Thread thread){
+    public ResponseEntity<String> addThread(@AuthenticationPrincipal User principal, @RequestBody GetThreadToCreateDTO getThreadToCreateDTO){
         try{
-            return ResponseEntity.ok(threadService.addThread(principal,thread));
+            return ResponseEntity.ok(threadService.addThread(principal,getThreadToCreateDTO));
         }catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }catch(ChangeSetPersister.NotFoundException e) {

@@ -2,8 +2,10 @@ package com.plugandroll.version1.services;
 
 import com.plugandroll.version1.models.Publication;
 import com.plugandroll.version1.models.Thread;
+import com.plugandroll.version1.models.TypeRol;
 import com.plugandroll.version1.models.UserEntity;
 import com.plugandroll.version1.repositories.PublicationRepository;
+import com.plugandroll.version1.repositories.ThreadRepository;
 import com.plugandroll.version1.repositories.UserEntityRepository;
 import com.plugandroll.version1.utils.UnauthorizedException;
 import io.jsonwebtoken.lang.Assert;
@@ -11,10 +13,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -22,6 +24,7 @@ public class PublicationService {
 
     private PublicationRepository publicationRepository;
     private UserEntityRepository userEntityRepository;
+    private ThreadRepository threadRepository;
 
     public List<Publication> findAll(){
         List<Publication> res = publicationRepository.findAll();
@@ -34,8 +37,20 @@ public class PublicationService {
         return publication;
     }
 
-    public List<Publication> findByThreadId(String threadId){
-        return this.publicationRepository.findByThreadId(threadId);
+    public Set<Publication> findByThreadId(User principal, String threadId){
+        Set<Publication> res = new HashSet<>();
+        Thread thread = this.threadRepository.findById(threadId).orElse(null);
+        if(thread.getForum().getType().size()==3){
+            res = this.publicationRepository.findByThreadId(threadId);
+        }else if(principal!=null){
+            UserEntity user = this.userEntityRepository.findByUsername(principal.getUsername()).orElse(null);
+            for (TypeRol rol : user.getRoles()) {
+                if(thread.getForum().getType().contains(rol)){
+                    res = this.publicationRepository.findByThreadId(threadId);
+                }
+            }
+        }
+        return res;
     }
 
     public String addPublication(Publication publication) throws UnauthorizedException {

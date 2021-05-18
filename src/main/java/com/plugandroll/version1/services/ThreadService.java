@@ -1,8 +1,11 @@
 package com.plugandroll.version1.services;
 
+import com.plugandroll.version1.dtos.GetThreadToCreateDTO;
 import com.plugandroll.version1.mappers.UserDTOConverter;
+import com.plugandroll.version1.models.Forum;
 import com.plugandroll.version1.models.Thread;
 import com.plugandroll.version1.models.UserEntity;
+import com.plugandroll.version1.repositories.ForumRepository;
 import com.plugandroll.version1.repositories.ThreadRepository;
 import com.plugandroll.version1.repositories.UserEntityRepository;
 import com.plugandroll.version1.utils.UnauthorizedException;
@@ -24,6 +27,7 @@ public class ThreadService {
 
     private ThreadRepository threadRepository;
     private UserEntityRepository userEntityRepository;
+    private ForumRepository forumRepository;
 
     public List<Thread> findAll(){
         List<Thread> res = threadRepository.findAll();
@@ -57,12 +61,19 @@ public class ThreadService {
         return "Thread was successfully edited";
     }
 
-    public String addThread(User principal, Thread thread) throws ChangeSetPersister.NotFoundException{
-
+    public String addThread(User principal, GetThreadToCreateDTO getThreadToCreateDTO) throws ChangeSetPersister.NotFoundException{
         UserEntity me = this.userEntityRepository.findByUsername(principal.getUsername()).orElseThrow(ChangeSetPersister.NotFoundException::new);
-        thread.setCreator(UserDTOConverter.UserToGetUserDTO(me));
-        thread.setOpenDate(LocalDateTime.now());
-        this.threadRepository.save(thread);
+        Forum forum = this.forumRepository.findById(getThreadToCreateDTO.getForumId()).orElse(null);
+
+        Thread newThread = new Thread(getThreadToCreateDTO.getTitle(),
+                getThreadToCreateDTO.getRating(),
+                LocalDateTime.now(),
+                null,
+                UserDTOConverter.UserToGetUserDTO(me),
+                getThreadToCreateDTO.getOnlyAuth(),
+                forum);
+
+        this.threadRepository.save(newThread);
         return "Thread was successfully added";
     }
 
