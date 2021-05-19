@@ -24,9 +24,9 @@ public class MongoDBPopulate<E> {
 
             /*================= USERS =================*/
 
-            UserEntity master = new UserEntity("master",
-                    passwordEncoder.encode("mastermaster"),
-                    "master@masterchef.com",
+            UserEntity master = new UserEntity("asdf",
+                    passwordEncoder.encode("asdfasdf"),
+                    "asdf@asdf.com",
                     true,
                     Stream.of(TypeRol.ADMIN, TypeRol.DM).collect(Collectors.toSet()));
 
