@@ -16,4 +16,5 @@ public interface ForumRepository extends MongoRepository<Forum, TypeRol> {
     Optional<Forum> findById(String id);
 
     Optional<Forum> findForumByTitle(String tile);
+
 }

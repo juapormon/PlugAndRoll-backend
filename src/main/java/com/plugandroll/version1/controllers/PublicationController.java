@@ -97,4 +97,17 @@ public class PublicationController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only admins have that privilege");
         }
     }
+
+    @DeleteMapping("/deleteAll/{threadId}")
+    public ResponseEntity<String> deletePublicationsByThread(@AuthenticationPrincipal User principal, @PathVariable String threadId){
+        try{
+            return ResponseEntity.ok(publicationService.deletePublicationsByThread(principal, threadId));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }catch(ChangeSetPersister.NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something you want does not exist");
+        }catch(UnauthorizedException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only admins have that privilege");
+        }
+    }
 }

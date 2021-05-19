@@ -87,4 +87,16 @@ public class PublicationService {
         }
         return "Thread was successfully deleted";
     }
+
+    public String deletePublicationsByThread(User principal, String threadId) throws ChangeSetPersister.NotFoundException, UnauthorizedException {
+
+        UserEntity me = this.userEntityRepository.findByUsername(principal.getUsername()).orElseThrow(ChangeSetPersister.NotFoundException::new);
+        Thread threadDeleted = this.threadRepository.findById(threadId).orElseThrow(ChangeSetPersister.NotFoundException::new);
+        if(me.getUsername().equals(threadDeleted.getCreator().getUsername())||me.getRoles().contains("ADMIN")){
+            this.publicationRepository.deleteAllByThreadId(threadId);
+        }else{
+            throw new UnauthorizedException();
+        }
+        return "Thread was successfully deleted";
+    }
 }

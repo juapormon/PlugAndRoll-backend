@@ -3,9 +3,11 @@ package com.plugandroll.version1.services;
 import com.plugandroll.version1.dtos.GetThreadToCreateDTO;
 import com.plugandroll.version1.mappers.UserDTOConverter;
 import com.plugandroll.version1.models.Forum;
+import com.plugandroll.version1.models.Publication;
 import com.plugandroll.version1.models.Thread;
 import com.plugandroll.version1.models.UserEntity;
 import com.plugandroll.version1.repositories.ForumRepository;
+import com.plugandroll.version1.repositories.PublicationRepository;
 import com.plugandroll.version1.repositories.ThreadRepository;
 import com.plugandroll.version1.repositories.UserEntityRepository;
 import com.plugandroll.version1.utils.UnauthorizedException;
@@ -19,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +36,10 @@ public class ThreadService {
         List<Thread> res = threadRepository.findAll();
         Collections.reverse(res);
         return res;
+    }
+
+    public Thread findById(String threadId) throws ChangeSetPersister.NotFoundException {
+        return this.threadRepository.findById(threadId).orElseThrow(ChangeSetPersister.NotFoundException::new);
     }
 
     public List<Thread> findByForum(User principal, String forumId){
@@ -101,5 +108,8 @@ public class ThreadService {
         }
         return "Thread was successfully deleted";
     }
+
+
+
 
 }

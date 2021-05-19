@@ -1,6 +1,7 @@
 package com.plugandroll.version1.repositories;
 
 import com.plugandroll.version1.models.Publication;
+import org.springframework.data.mongodb.repository.DeleteQuery;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,5 +19,8 @@ public interface PublicationRepository extends MongoRepository<Publication, Stri
 
     @Query("{ 'thread.id' : ?0 }")
     Set<Publication> findByThreadId(String threadId);
+
+    @DeleteQuery("{ 'thread.id' : ?0 }")
+    void deleteAllByThreadId(String threadId);
 
 }

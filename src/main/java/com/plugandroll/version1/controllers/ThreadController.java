@@ -2,6 +2,7 @@ package com.plugandroll.version1.controllers;
 
 import com.plugandroll.version1.dtos.GetThreadToCreateDTO;
 import com.plugandroll.version1.models.Thread;
+import com.plugandroll.version1.services.PublicationService;
 import com.plugandroll.version1.services.ThreadService;
 import com.plugandroll.version1.utils.UnauthorizedException;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.List;
 public class ThreadController {
 
     private ThreadService threadService;
+    private PublicationService publicationService;
 
     @GetMapping("/findAll")
     public ResponseEntity<List<Thread>> findAll(){
@@ -29,6 +31,17 @@ public class ThreadController {
             return ResponseEntity.ok(threadService.findAll());
         }catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping("/{threadId}")
+    public ResponseEntity<Thread> findById(@PathVariable String threadId){
+        try{
+            return ResponseEntity.ok(threadService.findById(threadId));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }catch (ChangeSetPersister.NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
@@ -64,7 +77,7 @@ public class ThreadController {
     }
 
     @PutMapping("/close/{threadId}")
-    public ResponseEntity<String> closeThread(@AuthenticationPrincipal User principal, @RequestBody Thread thread, @PathVariable String threadId){
+    public ResponseEntity<String> closeThread(@AuthenticationPrincipal User principal, @PathVariable String threadId){
         try{
             return ResponseEntity.ok(threadService.closeThread(principal, threadId));
         }catch (IllegalArgumentException e){
@@ -99,6 +112,5 @@ public class ThreadController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only admins have that privilege");
         }
     }
-
 
 }
