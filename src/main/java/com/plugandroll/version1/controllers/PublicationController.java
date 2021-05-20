@@ -69,8 +69,6 @@ public class PublicationController {
             return ResponseEntity.status(HttpStatus.CREATED).body(publicationService.addPublication(principal,getPublicationToCreateDTO));
         }catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }catch (UnauthorizedException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("This Thread is closed");
         }catch (NotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -97,8 +95,6 @@ public class PublicationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }catch(ChangeSetPersister.NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something you want does not exist");
-        }catch(UnauthorizedException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Only admins have that privilege");
         }
     }
 

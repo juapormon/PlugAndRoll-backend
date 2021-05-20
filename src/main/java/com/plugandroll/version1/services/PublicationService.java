@@ -55,7 +55,9 @@ public class PublicationService {
         return res;
     }
 
-    public String addPublication(User principal, GetPublicationToCreateDTO getPublicationToCreateDTO) throws UnauthorizedException, IllegalArgumentException, ChangeSetPersister.NotFoundException {
+    public String addPublication(User principal, GetPublicationToCreateDTO getPublicationToCreateDTO) throws IllegalArgumentException, ChangeSetPersister.NotFoundException {
+        String res = "";
+
         Assert.notNull(getPublicationToCreateDTO);
         UserEntity me = this.userEntityRepository.findByUsername(principal.getUsername()).orElseThrow(ChangeSetPersister.NotFoundException::new);
         Thread thread = this.threadRepository.findById(getPublicationToCreateDTO.getThreadId()).orElseThrow(IllegalArgumentException::new);
@@ -63,12 +65,14 @@ public class PublicationService {
                 LocalDateTime.now(),
                 UserDTOConverter.UserToGetUserDTO(me),
                 thread);
+
         if(thread.getCloseDate()==null) {
             this.publicationRepository.save(publication);
+            res = "Published successfully";
         }else{
-            throw new UnauthorizedException();
+            res = "This thread is closed, you cannot post anymore";
         }
-        return "Published successfully";
+        return res;
     }
 
     public String editPublication(User principal, Publication publication, String publicationId) throws ChangeSetPersister.NotFoundException, UnauthorizedException {
@@ -84,16 +88,18 @@ public class PublicationService {
         return "Publication was successfully edited";
     }
 
-    public String deletePublication(User principal, String threadId) throws ChangeSetPersister.NotFoundException, UnauthorizedException {
+    public String deletePublication(User principal, String threadId) throws ChangeSetPersister.NotFoundException {
+        String res = "";
 
         UserEntity me = this.userEntityRepository.findByUsername(principal.getUsername()).orElseThrow(ChangeSetPersister.NotFoundException::new);
         Publication publicationToDelete = this.publicationRepository.findById(threadId).orElseThrow(ChangeSetPersister.NotFoundException::new);
         if(me.getUsername().equals(publicationToDelete.getCreator().getUsername())||me.getRoles().contains("ADMIN")){
             this.publicationRepository.deleteById(threadId);
+            res = "Publication was successfully deleted";
         }else{
-            throw new UnauthorizedException();
+            res = "You're not allowed to do that";
         }
-        return "Thread was successfully deleted";
+        return res;
     }
 
     public String deletePublicationsByThread(User principal, String threadId) throws ChangeSetPersister.NotFoundException, UnauthorizedException {
