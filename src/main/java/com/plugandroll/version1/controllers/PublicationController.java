@@ -1,5 +1,7 @@
 package com.plugandroll.version1.controllers;
 
+import com.plugandroll.version1.dtos.GetPublicationDTO;
+import com.plugandroll.version1.dtos.GetPublicationToCreateDTO;
 import com.plugandroll.version1.models.Publication;
 import com.plugandroll.version1.models.Thread;
 import com.plugandroll.version1.services.PublicationService;
@@ -62,13 +64,15 @@ public class PublicationController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addPublication(@RequestBody final Publication publication){
+    public ResponseEntity<String> addPublication(@AuthenticationPrincipal User principal, @RequestBody final GetPublicationToCreateDTO getPublicationToCreateDTO){
         try{
-            return ResponseEntity.status(HttpStatus.CREATED).body(publicationService.addPublication(publication));
+            return ResponseEntity.status(HttpStatus.CREATED).body(publicationService.addPublication(principal,getPublicationToCreateDTO));
         }catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }catch (UnauthorizedException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("This Thread is closed");
+        }catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 

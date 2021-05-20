@@ -1,12 +1,6 @@
 package com.plugandroll.version1.dtos;
 
-import com.plugandroll.version1.models.Forum;
 import lombok.*;
-import org.hibernate.validator.constraints.Range;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
 import java.time.LocalDateTime;
 
 @Getter

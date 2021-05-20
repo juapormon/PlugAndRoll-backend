@@ -1,5 +1,6 @@
 package com.plugandroll.version1.services;
 
+import com.plugandroll.version1.dtos.GetPublicationDTO;
 import com.plugandroll.version1.dtos.GetThreadDTO;
 import com.plugandroll.version1.models.Forum;
 import com.plugandroll.version1.models.SpamWord;
@@ -52,6 +53,14 @@ public class SpamWordService {
     public Boolean CheckThread(GetThreadDTO threadDTO) {
         Boolean res=false;
         if(isSpam(threadDTO.getTitle())) {
+            res = true;
+        }
+        return res;
+    }
+
+    public Boolean CheckPublication(GetPublicationDTO publicationDTO) {
+        Boolean res=false;
+        if(isSpam(publicationDTO.getText())) {
             res = true;
         }
         return res;

@@ -1,5 +1,7 @@
 package com.plugandroll.version1.services;
 
+import com.plugandroll.version1.dtos.GetPublicationToCreateDTO;
+import com.plugandroll.version1.mappers.UserDTOConverter;
 import com.plugandroll.version1.models.Publication;
 import com.plugandroll.version1.models.Thread;
 import com.plugandroll.version1.models.TypeRol;
@@ -13,9 +15,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -53,9 +55,15 @@ public class PublicationService {
         return res;
     }
 
-    public String addPublication(Publication publication) throws UnauthorizedException {
-        Assert.notNull(publication);
-        if(publication.getThread().getCloseDate()==null) {
+    public String addPublication(User principal, GetPublicationToCreateDTO getPublicationToCreateDTO) throws UnauthorizedException, IllegalArgumentException, ChangeSetPersister.NotFoundException {
+        Assert.notNull(getPublicationToCreateDTO);
+        UserEntity me = this.userEntityRepository.findByUsername(principal.getUsername()).orElseThrow(ChangeSetPersister.NotFoundException::new);
+        Thread thread = this.threadRepository.findById(getPublicationToCreateDTO.getThreadId()).orElseThrow(IllegalArgumentException::new);
+        Publication publication = new Publication(getPublicationToCreateDTO.getText(),
+                LocalDateTime.now(),
+                UserDTOConverter.UserToGetUserDTO(me),
+                thread);
+        if(thread.getCloseDate()==null) {
             this.publicationRepository.save(publication);
         }else{
             throw new UnauthorizedException();
