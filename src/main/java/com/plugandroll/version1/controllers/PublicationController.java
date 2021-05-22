@@ -1,5 +1,7 @@
 package com.plugandroll.version1.controllers;
 
+import com.plugandroll.version1.dtos.GetPublicationDTO;
+import com.plugandroll.version1.dtos.GetPublicationToCreateDTO;
 import com.plugandroll.version1.models.Publication;
 import com.plugandroll.version1.models.Thread;
 import com.plugandroll.version1.services.PublicationService;
@@ -15,6 +17,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin("*")
 @RestController
@@ -42,23 +45,32 @@ public class PublicationController {
         }
     }
 
-    @GetMapping("/findByThread/{threadid}")
-    public ResponseEntity<List<Publication>> findByThreadId(@PathVariable final String threadId) {
+    @GetMapping("/findByThread/{threadId}")
+    public ResponseEntity<Set<Publication>> findByThreadId(@AuthenticationPrincipal User principal, @PathVariable final String threadId) {
         try {
-            return ResponseEntity.ok(publicationService.findByThreadId(threadId));
+            return ResponseEntity.ok(publicationService.findByThreadId(principal, threadId));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping("/findByThreadNoAuth/{threadId}")
+    public ResponseEntity<Set<Publication>> findByThreadIdNoAuth(@PathVariable final String threadId) {
+        try {
+            return ResponseEntity.ok(publicationService.findByThreadId(null, threadId));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addPublication(@RequestBody final Publication publication){
+    public ResponseEntity<String> addPublication(@AuthenticationPrincipal User principal, @RequestBody final GetPublicationToCreateDTO getPublicationToCreateDTO){
         try{
-            return ResponseEntity.status(HttpStatus.CREATED).body(publicationService.addPublication(publication));
+            return ResponseEntity.status(HttpStatus.CREATED).body(publicationService.addPublication(principal,getPublicationToCreateDTO));
         }catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }catch (UnauthorizedException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("This Thread is closed");
+        }catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
@@ -79,6 +91,17 @@ public class PublicationController {
     public ResponseEntity<String> deletePublication(@AuthenticationPrincipal User principal, @PathVariable String publicationId){
         try{
             return ResponseEntity.ok(publicationService.deletePublication(principal, publicationId));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }catch(ChangeSetPersister.NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something you want does not exist");
+        }
+    }
+
+    @DeleteMapping("/deleteAll/{threadId}")
+    public ResponseEntity<String> deletePublicationsByThread(@AuthenticationPrincipal User principal, @PathVariable String threadId){
+        try{
+            return ResponseEntity.ok(publicationService.deletePublicationsByThread(principal, threadId));
         }catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }catch(ChangeSetPersister.NotFoundException e) {

@@ -1,8 +1,13 @@
 package com.plugandroll.version1.services;
 
+import com.plugandroll.version1.dtos.GetThreadToCreateDTO;
 import com.plugandroll.version1.mappers.UserDTOConverter;
+import com.plugandroll.version1.models.Forum;
+import com.plugandroll.version1.models.Publication;
 import com.plugandroll.version1.models.Thread;
 import com.plugandroll.version1.models.UserEntity;
+import com.plugandroll.version1.repositories.ForumRepository;
+import com.plugandroll.version1.repositories.PublicationRepository;
 import com.plugandroll.version1.repositories.ThreadRepository;
 import com.plugandroll.version1.repositories.UserEntityRepository;
 import com.plugandroll.version1.utils.UnauthorizedException;
@@ -13,8 +18,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -22,6 +30,7 @@ public class ThreadService {
 
     private ThreadRepository threadRepository;
     private UserEntityRepository userEntityRepository;
+    private ForumRepository forumRepository;
 
     public List<Thread> findAll(){
         List<Thread> res = threadRepository.findAll();
@@ -29,8 +38,18 @@ public class ThreadService {
         return res;
     }
 
-    public List<Thread> findByForum(String forumId){
-        List<Thread> res = threadRepository.findByForumId(forumId);
+    public Thread findById(String threadId) throws ChangeSetPersister.NotFoundException {
+        return this.threadRepository.findById(threadId).orElseThrow(ChangeSetPersister.NotFoundException::new);
+    }
+
+    public List<Thread> findByForum(User principal, String forumId){
+        List<Thread> res = new ArrayList<>();
+        List<Thread> threads = threadRepository.findByForumId(forumId);
+        if(principal==null) {
+            res.addAll(threads.stream().filter(a -> a.getOnlyAuth() == false).collect(Collectors.toList()));
+        }else{
+            res.addAll(threads);
+        }
         Collections.reverse(res);
         return res;
     }
@@ -41,6 +60,7 @@ public class ThreadService {
         Thread threadToUpdate = this.threadRepository.findById(threadId).orElseThrow(ChangeSetPersister.NotFoundException::new);
         if(me.getUsername().equals(threadToUpdate.getCreator().getUsername())){
             threadToUpdate.setTitle(thread.getTitle());
+            threadToUpdate.setOnlyAuth(thread.getOnlyAuth());
             this.threadRepository.save(threadToUpdate);
         }else{
             throw new UnauthorizedException();
@@ -48,12 +68,19 @@ public class ThreadService {
         return "Thread was successfully edited";
     }
 
-    public String addThread(User principal, Thread thread) throws ChangeSetPersister.NotFoundException{
-
+    public String addThread(User principal, GetThreadToCreateDTO getThreadToCreateDTO) throws ChangeSetPersister.NotFoundException{
         UserEntity me = this.userEntityRepository.findByUsername(principal.getUsername()).orElseThrow(ChangeSetPersister.NotFoundException::new);
-        thread.setCreator(UserDTOConverter.UserToGetUserDTO(me));
-        thread.setOpenDate(LocalDateTime.now());
-        this.threadRepository.save(thread);
+        Forum forum = this.forumRepository.findById(getThreadToCreateDTO.getForumId()).orElse(null);
+
+        Thread newThread = new Thread(getThreadToCreateDTO.getTitle(),
+                getThreadToCreateDTO.getRating(),
+                LocalDateTime.now(),
+                null,
+                UserDTOConverter.UserToGetUserDTO(me),
+                getThreadToCreateDTO.getOnlyAuth(),
+                forum);
+
+        this.threadRepository.save(newThread);
         return "Thread was successfully added";
     }
 
@@ -81,5 +108,8 @@ public class ThreadService {
         }
         return "Thread was successfully deleted";
     }
+
+
+
 
 }

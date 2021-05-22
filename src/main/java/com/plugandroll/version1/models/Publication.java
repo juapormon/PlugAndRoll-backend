@@ -17,6 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "Publication")
+@Builder
 public class Publication extends  BaseEntity{
 
     @NotBlank
@@ -24,6 +25,8 @@ public class Publication extends  BaseEntity{
 
     @Past
     private LocalDateTime date;
+
+    //imagen
 
     private GetUserDTO creator;
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin("*")
 @RestController
@@ -22,15 +23,31 @@ public class ForumController {
 
     private ForumService forumService;
 
-    @GetMapping("/findAll")
-    public ResponseEntity<List<Forum>> findAll(){
+    @GetMapping("/{forumId}")
+    public ResponseEntity<Forum> findById(@PathVariable String forumId){
         try{
-            return ResponseEntity.ok(forumService.findAll());
+            return ResponseEntity.ok(forumService.findById(forumId));
         }catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
+    @GetMapping("/findByRole")
+    public ResponseEntity<Set<Forum>> findByRole(@AuthenticationPrincipal User principal){
+        try{
+            return ResponseEntity.ok(forumService.findByRoleAuth(principal));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+    @GetMapping("/findForums")
+    public ResponseEntity<List<Forum>> findForums(){
+        try{
+            return ResponseEntity.ok(forumService.findByRoleNoAuth());
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
     @PutMapping("/edit/{forumId}")
     public ResponseEntity<String> addForum(@AuthenticationPrincipal User principal, @RequestBody Forum forum, @PathVariable String forumId){
         try{
