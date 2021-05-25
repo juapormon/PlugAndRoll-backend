@@ -93,7 +93,7 @@ public class PublicationService {
 
         UserEntity me = this.userEntityRepository.findByUsername(principal.getUsername()).orElseThrow(ChangeSetPersister.NotFoundException::new);
         Publication publicationToDelete = this.publicationRepository.findById(threadId).orElseThrow(ChangeSetPersister.NotFoundException::new);
-        if(me.getUsername().equals(publicationToDelete.getCreator().getUsername())||me.getRoles().contains("ADMIN")){
+        if(me.getUsername().equals(publicationToDelete.getCreator().getUsername())||me.getRoles().contains(TypeRol.ADMIN)){
             this.publicationRepository.deleteById(threadId);
             res = "Publication was successfully deleted";
         }else{
@@ -106,7 +106,7 @@ public class PublicationService {
 
         UserEntity me = this.userEntityRepository.findByUsername(principal.getUsername()).orElseThrow(ChangeSetPersister.NotFoundException::new);
         Thread threadDeleted = this.threadRepository.findById(threadId).orElseThrow(ChangeSetPersister.NotFoundException::new);
-        if(me.getUsername().equals(threadDeleted.getCreator().getUsername())||me.getRoles().contains("ADMIN")){
+        if(me.getUsername().equals(threadDeleted.getCreator().getUsername())||me.getRoles().contains(TypeRol.ADMIN)){
             this.publicationRepository.deleteAllByThreadId(threadId);
         }else{
             throw new UnauthorizedException();

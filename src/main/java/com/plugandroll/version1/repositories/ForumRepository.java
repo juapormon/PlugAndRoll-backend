@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ForumRepository extends MongoRepository<Forum, TypeRol> {
+public interface ForumRepository extends MongoRepository<Forum, String> {
 
     List<Forum> findAll();
 

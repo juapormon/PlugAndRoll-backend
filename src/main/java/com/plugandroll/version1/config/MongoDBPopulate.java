@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,13 +24,16 @@ public class MongoDBPopulate {
     @Bean
     CommandLineRunner commandLineRunner(UserEntityRepository userEntityRepository, PublicationRepository publicationRepository,
                                         ForumRepository forumRepository, ThreadRepository threadRepository,
-                                        SpamWordRepository spamWordRepository) {
+                                        SpamWordRepository spamWordRepository, OfferRepository offerRepository,
+                                        ApplicationRepostiory applicationRepostiory) {
         return strings -> {
             userEntityRepository.deleteAll();
             publicationRepository.deleteAll();
             forumRepository.deleteAll();
             threadRepository.deleteAll();
             spamWordRepository.deleteAll();
+            offerRepository.deleteAll();
+            applicationRepostiory.deleteAll();
 
             /*================= USERS =================*/
 
@@ -37,7 +41,9 @@ public class MongoDBPopulate {
                     passwordEncoder.encode("mastermaster"),
                     "master@masterchef.com",
                     true,
-                    Stream.of(TypeRol.ADMIN, TypeRol.DM).collect(Collectors.toSet()));
+                    Stream.of(TypeRol.ADMIN, TypeRol.DM).collect(Collectors.toSet()),
+                    2.5,
+                    null);
 
             userEntityRepository.save(master);
 
@@ -45,7 +51,9 @@ public class MongoDBPopulate {
                     passwordEncoder.encode("player1player1"),
                     "player1@masterchef.com",
                     true,
-                    Stream.of(TypeRol.PLAYER).collect(Collectors.toSet()));
+                    Stream.of(TypeRol.PLAYER).collect(Collectors.toSet()),
+                    0.0,
+                    null);
 
             userEntityRepository.save(player1);
 
@@ -53,7 +61,9 @@ public class MongoDBPopulate {
                     passwordEncoder.encode("dm1dm1dm1dm1"),
                     "dm1@masterchef.com",
                     true,
-                    Stream.of(TypeRol.DM).collect(Collectors.toSet()));
+                    Stream.of(TypeRol.DM).collect(Collectors.toSet()),
+                    5.0,
+                    null);
 
             userEntityRepository.save(dm1);
 
@@ -166,6 +176,26 @@ public class MongoDBPopulate {
             spamWordRepository.saveAll(Lists.list(spam1, spam2, spam3, spam4, spam5,
                     spam6,spam7,spam8,spam9,spam10));
 
+            /*================= Offers =================*/
+
+            CoachingOffer offer1 = new CoachingOffer("Coaching in game for D&D- 1h", CoachingType.DM, 10, UserDTOConverter.UserToGetUserDTO(master));
+            CoachingOffer offer2 = new CoachingOffer("I'll coach you if you let me", CoachingType.PLAYER, 40,UserDTOConverter.UserToGetUserDTO(player1));
+            CoachingOffer offer3 = new CoachingOffer("Coach for begginers. Includes Spells, levels, items, etc..", CoachingType.PLAYER, 15, UserDTOConverter.UserToGetUserDTO(player1));
+            CoachingOffer offer4 = new CoachingOffer("Advanced Dms coaching", CoachingType.DM, 10,UserDTOConverter.UserToGetUserDTO(dm1));
+
+
+            offerRepository.saveAll(Lists.list(offer1, offer2, offer3, offer4));
+
+
+            /*================= Applications =================*/
+
+            Application application1 = new Application(master.getUsername(), offer1, LocalDate.now(), false);
+            Application application2 = new Application(master.getUsername(), offer1, LocalDate.now(),true);
+            Application application3 = new Application(master.getUsername(), offer3, LocalDate.now(), false);
+            Application application4 = new Application(master.getUsername(), offer4, LocalDate.now(),false);
+
+
+            applicationRepostiory.saveAll(Lists.list(application1, application2, application3, application4));
         };
 
     }
