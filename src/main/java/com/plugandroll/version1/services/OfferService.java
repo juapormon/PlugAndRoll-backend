@@ -28,6 +28,10 @@ public class OfferService {
         return this.offerRepository.findAllByCoachingType(coachingType);
     }
 
+    public CoachingOffer findById(String offerId){
+        return this.offerRepository.findById(offerId).orElse(null);
+    }
+
     public String addOffer(User principal, CoachingOffer coachingOffer) throws ChangeSetPersister.NotFoundException{
         String res;
         UserEntity me = this.userEntityRepository.findByUsername(principal.getUsername()).orElseThrow(ChangeSetPersister.NotFoundException::new);
@@ -42,7 +46,7 @@ public class OfferService {
             this.offerRepository.save(newCoachingOffer);
             res = "Offer was published!";
         }else{
-            res = "You already have 2 coaching offers published!";
+            res = "You have already 2 coaching offers published!";
         }
         return res;
     }

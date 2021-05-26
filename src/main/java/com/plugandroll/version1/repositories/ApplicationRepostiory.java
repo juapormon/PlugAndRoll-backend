@@ -14,12 +14,18 @@ public interface ApplicationRepostiory extends MongoRepository<Application, Stri
     @Query("{ 'coachingOffer.id' : ?0 }")
     List<Application> findByCoachingOfferId(String id);
 
+    @Query("{ 'applicatorUsername' : ?0 }")
+    List<Application> findAllByApplicatorUsername(String username);
+
     @DeleteQuery("{ 'coachingOffer.id' : ?0 }")
     void deleteAllByCoachingOfferId(String id);
 
-    @Query("$and: [ { 'coachingOffer.id' : ?0 }, { 'coachingOffer.accepted' : true } ]")
+    @Query("{ $and: [ { 'coachingOffer.id' : ?0 }, { 'accepted' : true } ] }")
     List<Application> findByAccepted(String id);
 
-    @Query("$and: [ { 'coachingOffer.id' : ?0 }, { 'coachingOffer.accepted' : false } ]")
+    @Query("{ $and: [ { 'coachingOffer.id' : ?0 }, { 'accepted' : false } ] }")
     List<Application> findByPending(String id);
+
+    @Query("{ $and: [ { 'coachingOffer.id' : ?1 }, { 'applicatorUsername' : ?0 } ] }")
+    Application findByUsernameAndOfferId( String username, String OfferId);
 }

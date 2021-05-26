@@ -23,10 +23,19 @@ public class OfferController {
 
     private OfferService offerService;
 
-    @GetMapping("/{coachingType}")
+    @GetMapping("/type/{coachingType}")
     public ResponseEntity<List<CoachingOffer>> findByType(@PathVariable CoachingType coachingType){
         try{
             return ResponseEntity.ok(offerService.findByCoachingType(coachingType));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping("/{offerId}")
+    public ResponseEntity<CoachingOffer> findById(@PathVariable String offerId){
+        try{
+            return ResponseEntity.ok(offerService.findById(offerId));
         }catch (IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
