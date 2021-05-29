@@ -22,7 +22,7 @@ public class CoachingOffer extends BaseEntity{
     private CoachingType coachingType;
 
     @NotNull
-    private Integer price;
+    private Double price;
 
     @NotNull
     private GetUserDTO creator;

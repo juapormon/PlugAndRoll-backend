@@ -1,6 +1,7 @@
 package com.plugandroll.version1.controllers;
 
 import com.plugandroll.version1.models.Application;
+import com.plugandroll.version1.models.CoachingType;
 import com.plugandroll.version1.services.ApplicationService;
 import com.plugandroll.version1.utils.UnauthorizedException;
 import lombok.AllArgsConstructor;
@@ -49,10 +50,10 @@ public class ApplicationController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
-    @GetMapping("/applications/myApplications")
-    public ResponseEntity<List<Application>> findMyApplications(@AuthenticationPrincipal User principal){
+    @GetMapping("/applications/{type}/myApplications")
+    public ResponseEntity<List<Application>> findMyApplications(@AuthenticationPrincipal User principal, @PathVariable CoachingType type){
         try{
-            return ResponseEntity.ok(applicationService.findMyApplications(principal));
+            return ResponseEntity.ok(applicationService.findMyApplicationsByType(principal, type));
         }catch (IllegalArgumentException | ChangeSetPersister.NotFoundException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } catch (UnauthorizedException e) {
@@ -63,6 +64,16 @@ public class ApplicationController {
     public ResponseEntity<String> rejectApplication(@AuthenticationPrincipal User principal, @PathVariable String offerId, @PathVariable String applicationId){
         try{
             return ResponseEntity.ok(applicationService.rejectApplication(principal, offerId, applicationId));
+        }catch (IllegalArgumentException | ChangeSetPersister.NotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }catch (UnauthorizedException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
+    @DeleteMapping ("/applications/{applicationId}/delete")
+    public ResponseEntity<String> deleteApplication(@AuthenticationPrincipal User principal, @PathVariable String applicationId){
+        try{
+            return ResponseEntity.ok(applicationService.deleteApplication(principal, applicationId));
         }catch (IllegalArgumentException | ChangeSetPersister.NotFoundException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }catch (UnauthorizedException e){

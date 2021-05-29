@@ -1,6 +1,7 @@
 package com.plugandroll.version1.repositories;
 
 import com.plugandroll.version1.models.Application;
+import com.plugandroll.version1.models.CoachingType;
 import org.springframework.data.mongodb.repository.DeleteQuery;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -14,8 +15,8 @@ public interface ApplicationRepostiory extends MongoRepository<Application, Stri
     @Query("{ 'coachingOffer.id' : ?0 }")
     List<Application> findByCoachingOfferId(String id);
 
-    @Query("{ 'applicatorUsername' : ?0 }")
-    List<Application> findAllByApplicatorUsername(String username);
+    @Query("{ $and: [ { 'applicatorUsername' : ?0 }, { 'coachingOffer.coachingType' : ?1 } ] }")
+    List<Application> findAllByApplicatorUsernameAndType(String username, CoachingType type);
 
     @DeleteQuery("{ 'coachingOffer.id' : ?0 }")
     void deleteAllByCoachingOfferId(String id);

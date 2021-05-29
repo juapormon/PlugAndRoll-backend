@@ -178,10 +178,10 @@ public class MongoDBPopulate {
 
             /*================= Offers =================*/
 
-            CoachingOffer offer1 = new CoachingOffer("Coaching in game for D&D- 1h", CoachingType.DM, 10, UserDTOConverter.UserToGetUserDTO(master));
-            CoachingOffer offer2 = new CoachingOffer("I'll coach you if you let me", CoachingType.PLAYER, 40,UserDTOConverter.UserToGetUserDTO(player1));
-            CoachingOffer offer3 = new CoachingOffer("Coach for begginers. Includes Spells, levels, items, etc..", CoachingType.PLAYER, 15, UserDTOConverter.UserToGetUserDTO(player1));
-            CoachingOffer offer4 = new CoachingOffer("Advanced Dms coaching", CoachingType.DM, 10,UserDTOConverter.UserToGetUserDTO(dm1));
+            CoachingOffer offer1 = new CoachingOffer("Coaching in game for D&D- 1h", CoachingType.DM, 10.00, UserDTOConverter.UserToGetUserDTO(master));
+            CoachingOffer offer2 = new CoachingOffer("I'll coach you if you let me", CoachingType.PLAYER, 40.00,UserDTOConverter.UserToGetUserDTO(player1));
+            CoachingOffer offer3 = new CoachingOffer("Coach for begginers. Includes Spells, levels, items, etc.. You will be amazed", CoachingType.PLAYER, 15.00, UserDTOConverter.UserToGetUserDTO(player1));
+            CoachingOffer offer4 = new CoachingOffer("Advanced Dms coaching", CoachingType.DM, 10.00,UserDTOConverter.UserToGetUserDTO(dm1));
 
 
             offerRepository.saveAll(Lists.list(offer1, offer2, offer3, offer4));

@@ -32,6 +32,15 @@ public class OfferController {
         }
     }
 
+    @GetMapping("/myOffers")
+    public ResponseEntity<List<CoachingOffer>> findMyOffers(@AuthenticationPrincipal User principal){
+        try{
+            return ResponseEntity.ok(offerService.findMyOffers(principal));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
     @GetMapping("/{offerId}")
     public ResponseEntity<CoachingOffer> findById(@PathVariable String offerId){
         try{

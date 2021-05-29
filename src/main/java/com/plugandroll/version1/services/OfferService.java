@@ -8,6 +8,7 @@ import com.plugandroll.version1.models.UserEntity;
 import com.plugandroll.version1.repositories.ApplicationRepostiory;
 import com.plugandroll.version1.repositories.OfferRepository;
 import com.plugandroll.version1.repositories.UserEntityRepository;
+import io.jsonwebtoken.lang.Assert;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -26,6 +27,10 @@ public class OfferService {
 
     public List<CoachingOffer> findByCoachingType(CoachingType coachingType){
         return this.offerRepository.findAllByCoachingType(coachingType);
+    }
+
+    public List<CoachingOffer> findMyOffers(User principal) {
+        return this.offerRepository.findAllByCreatorUsername(principal.getUsername());
     }
 
     public CoachingOffer findById(String offerId){
