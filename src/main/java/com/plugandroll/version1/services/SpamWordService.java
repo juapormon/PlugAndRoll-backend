@@ -72,6 +72,9 @@ public class SpamWordService {
         if(isSpam(coachingOffer.getTitle())) {
             res = true;
         }
+        if(isSpam(coachingOffer.getDescription())) {
+            res = true;
+        }
         return res;
     }
 

@@ -43,7 +43,7 @@ public class MongoDBPopulate {
                     true,
                     Stream.of(TypeRol.ADMIN, TypeRol.DM).collect(Collectors.toSet()),
                     2.5,
-                    null);
+                    123);
 
             userEntityRepository.save(master);
 
@@ -53,7 +53,7 @@ public class MongoDBPopulate {
                     true,
                     Stream.of(TypeRol.PLAYER).collect(Collectors.toSet()),
                     0.0,
-                    null);
+                    12);
 
             userEntityRepository.save(player1);
 
@@ -63,7 +63,7 @@ public class MongoDBPopulate {
                     true,
                     Stream.of(TypeRol.DM).collect(Collectors.toSet()),
                     5.0,
-                    null);
+                    11);
 
             userEntityRepository.save(dm1);
 
@@ -178,10 +178,18 @@ public class MongoDBPopulate {
 
             /*================= Offers =================*/
 
-            CoachingOffer offer1 = new CoachingOffer("Coaching in game for D&D- 1h", CoachingType.DM, 10.00, UserDTOConverter.UserToGetUserDTO(master));
-            CoachingOffer offer2 = new CoachingOffer("I'll coach you if you let me", CoachingType.PLAYER, 40.00,UserDTOConverter.UserToGetUserDTO(player1));
-            CoachingOffer offer3 = new CoachingOffer("Coach for begginers. Includes Spells, levels, items, etc.. You will be amazed", CoachingType.PLAYER, 15.00, UserDTOConverter.UserToGetUserDTO(player1));
-            CoachingOffer offer4 = new CoachingOffer("Advanced Dms coaching", CoachingType.DM, 10.00,UserDTOConverter.UserToGetUserDTO(dm1));
+            CoachingOffer offer1 = new CoachingOffer("Coaching in game for D&D- 1h",
+                    "It's going to be an hour coaching you how to play this game",
+                    CoachingType.DM, 10.00, UserDTOConverter.UserToGetUserDTO(master));
+            CoachingOffer offer2 = new CoachingOffer("I'll coach you if you let me",
+                    "It's going to be an hour coaching you how to play this game",
+                    CoachingType.PLAYER, 40.00,UserDTOConverter.UserToGetUserDTO(player1));
+            CoachingOffer offer3 = new CoachingOffer("Coach for begginers. Includes Spells, levels, items, etc.. You will be amazed",
+                    "It's going to be an hour coaching you how to play this game",
+                    CoachingType.PLAYER, 15.00, UserDTOConverter.UserToGetUserDTO(player1));
+            CoachingOffer offer4 = new CoachingOffer("Advanced Dms coaching",
+                    "It's going to be an hour coaching you how to play this game",
+                    CoachingType.DM, 10.00,UserDTOConverter.UserToGetUserDTO(dm1));
 
 
             offerRepository.saveAll(Lists.list(offer1, offer2, offer3, offer4));

@@ -40,18 +40,22 @@ public class OfferService {
     public String addOffer(User principal, CoachingOffer coachingOffer) throws ChangeSetPersister.NotFoundException{
         String res;
         UserEntity me = this.userEntityRepository.findByUsername(principal.getUsername()).orElseThrow(ChangeSetPersister.NotFoundException::new);
+        if(coachingOffer.getTitle().length()<=100) {
+            List<CoachingOffer> userOffers = this.offerRepository.findAllByCreatorUsername(me.getUsername());
+            if (userOffers.size() < 2) {
+                CoachingOffer newCoachingOffer = new CoachingOffer(coachingOffer.getTitle(),
+                        coachingOffer.getDescription(),
+                        coachingOffer.getCoachingType(),
+                        coachingOffer.getPrice(),
+                        UserDTOConverter.UserToGetUserDTO(me));
 
-        List<CoachingOffer> userOffers = this.offerRepository.findAllByCreatorUsername(me.getUsername());
-        if(userOffers.size()<2){
-            CoachingOffer newCoachingOffer = new CoachingOffer(coachingOffer.getTitle(),
-                    coachingOffer.getCoachingType(),
-                    coachingOffer.getPrice(),
-                    UserDTOConverter.UserToGetUserDTO(me));
-
-            this.offerRepository.save(newCoachingOffer);
-            res = "Offer was published!";
+                this.offerRepository.save(newCoachingOffer);
+                res = "Offer was published!";
+            } else {
+                res = "You have already 2 coaching offers published!";
+            }
         }else{
-            res = "You have already 2 coaching offers published!";
+            res = "Title must have less than 100 characters";
         }
         return res;
     }

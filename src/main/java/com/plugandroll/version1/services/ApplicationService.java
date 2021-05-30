@@ -53,6 +53,7 @@ public class ApplicationService {
        return "Application rejected";
     }
 
+
     public String deleteApplication(User principal, String applicationId) throws ChangeSetPersister.NotFoundException, UnauthorizedException {
         Application application = this.applicationRepostiory.findById(applicationId).orElseThrow(()->new ChangeSetPersister.NotFoundException());
         if(!principal.getUsername().equals(application.getApplicatorUsername())){

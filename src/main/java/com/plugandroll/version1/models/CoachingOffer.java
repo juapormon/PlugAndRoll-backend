@@ -1,6 +1,7 @@
 package com.plugandroll.version1.models;
 
 import com.plugandroll.version1.dtos.GetUserDTO;
+
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,6 +18,9 @@ public class CoachingOffer extends BaseEntity{
 
     @NotBlank
     private String title;
+
+    @NotBlank
+    private String description;
 
     @NotNull
     private CoachingType coachingType;

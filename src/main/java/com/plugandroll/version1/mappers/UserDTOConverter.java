@@ -14,6 +14,8 @@ public class UserDTOConverter {
                 .email(user.getEmail())
                 .isPremium(user.getIsPremium())
                 .roles(user.getRoles())
+                .rating(user.getRating())
+                .CoachedGames(user.getCoachedGames())
                 .build();
     }
 }
