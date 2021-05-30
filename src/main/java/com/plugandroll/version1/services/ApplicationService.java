@@ -52,7 +52,13 @@ public class ApplicationService {
        this.applicationRepostiory.deleteById(applicationId);
        return "Application rejected";
     }
-
+    public String acceptApplication(User principal, String offerId, String applicationId) throws ChangeSetPersister.NotFoundException, UnauthorizedException {
+        checkCreator(principal, offerId);
+        Application application = this.applicationRepostiory.findById(applicationId).orElseThrow(ChangeSetPersister.NotFoundException::new);
+        application.setAccepted(true);
+        this.applicationRepostiory.save(application);
+        return "Application accepted!";
+    }
 
     public String deleteApplication(User principal, String applicationId) throws ChangeSetPersister.NotFoundException, UnauthorizedException {
         Application application = this.applicationRepostiory.findById(applicationId).orElseThrow(()->new ChangeSetPersister.NotFoundException());

@@ -60,6 +60,17 @@ public class ApplicationController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
+    @PutMapping ("/offers/{offerId}/applications/{applicationId}/accept")
+    public ResponseEntity<String> acceptApplication(@AuthenticationPrincipal User principal, @PathVariable String offerId, @PathVariable String applicationId){
+        try{
+            return ResponseEntity.ok(applicationService.acceptApplication(principal, offerId, applicationId));
+        }catch (IllegalArgumentException | ChangeSetPersister.NotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }catch (UnauthorizedException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
+
     @DeleteMapping ("/offers/{offerId}/applications/{applicationId}/reject")
     public ResponseEntity<String> rejectApplication(@AuthenticationPrincipal User principal, @PathVariable String offerId, @PathVariable String applicationId){
         try{
