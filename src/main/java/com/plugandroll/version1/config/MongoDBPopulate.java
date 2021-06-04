@@ -52,7 +52,7 @@ public class MongoDBPopulate {
                     "player1@masterchef.com",
                     true,
                     Stream.of(TypeRol.PLAYER).collect(Collectors.toSet()),
-                    0.0,
+                    3.0,
                     12);
 
             userEntityRepository.save(player1);
