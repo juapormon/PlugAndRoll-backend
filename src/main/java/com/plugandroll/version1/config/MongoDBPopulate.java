@@ -81,20 +81,20 @@ public class MongoDBPopulate {
 
             /*================= THREAD =================*/
 
-            Thread thread1 = new Thread("Habeis visto lo bien que...", 5, LocalDateTime.of(2020,5,21,16,05,23),
-                    null, UserDTOConverter.UserToGetUserDTO(master), false, forum1);
+            Thread thread1 = new Thread("Habeis visto lo bien que...", 4.6, LocalDateTime.of(2020,5,21,16,05,23),
+                    LocalDateTime.of(2021,5,21,16,05,23), UserDTOConverter.UserToGetUserDTO(master), false, forum1);
 
-            Thread thread2 = new Thread("No tiene mucho sentido, no entres", 2, LocalDateTime.of(2020,5,21,16,05,23),
+            Thread thread2 = new Thread("No tiene mucho sentido, no entres", 2.0, LocalDateTime.of(2020,5,21,16,05,23),
                     null, UserDTOConverter.UserToGetUserDTO(master), false, forum3);
 
-            Thread thread3 = new Thread("solo los dms podemos verlo", 2, LocalDateTime.of(2020,5,21,16,05,23),
-                    null, UserDTOConverter.UserToGetUserDTO(master), false, forum2);
+            Thread thread3 = new Thread("solo los dms podemos verlo", 3.0, LocalDateTime.of(2020,5,21,16,05,23),
+                    LocalDateTime.of(2021,5,21,16,05,23), UserDTOConverter.UserToGetUserDTO(master), false, forum2);
 
-            Thread thread4 = new Thread("los no registrados no veran esto", 2, LocalDateTime.of(2020,5,21,16,05,23),
-                    null, UserDTOConverter.UserToGetUserDTO(master), true, forum4);
+            Thread thread4 = new Thread("los no registrados no veran esto", 5.0, LocalDateTime.of(2020,5,21,16,05,23),
+                    LocalDateTime.of(2021,5,21,16,05,23), UserDTOConverter.UserToGetUserDTO(master), true, forum4);
 
-            Thread thread5 = new Thread("Que palizaaaa", 2, LocalDateTime.of(2020,5,21,16,05,23),
-                    null, UserDTOConverter.UserToGetUserDTO(master), false, forum4);
+            Thread thread5 = new Thread("Que palizaaaa", 1.0, LocalDateTime.of(2020,5,21,16,05,23),
+                    LocalDateTime.of(2021,5,21,16,05,23), UserDTOConverter.UserToGetUserDTO(master), false, forum4);
 
             threadRepository.save(thread1);
             threadRepository.save(thread2);

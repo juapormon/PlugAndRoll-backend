@@ -71,7 +71,7 @@ public class ThreadService {
         Forum forum = this.forumRepository.findById(getThreadToCreateDTO.getForumId()).orElse(null);
 
         Thread newThread = new Thread(getThreadToCreateDTO.getTitle(),
-                getThreadToCreateDTO.getRating(),
+                0.0,
                 LocalDateTime.now(),
                 null,
                 UserDTOConverter.UserToGetUserDTO(me),

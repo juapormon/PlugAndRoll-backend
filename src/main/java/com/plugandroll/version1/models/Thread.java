@@ -25,7 +25,7 @@ public class Thread extends BaseEntity{
     private String title;
 
     @Range(min = 0 , max = 5)
-    private Integer rating;
+    private Double rating;
 
     @Past
     private LocalDateTime openDate;
