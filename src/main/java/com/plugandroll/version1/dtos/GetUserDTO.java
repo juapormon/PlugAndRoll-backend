@@ -33,4 +33,8 @@ public class GetUserDTO {
     private Boolean isPremium;
 
     private Set<TypeRol> roles;
+
+    private Double rating;
+
+    private Integer CoachedGames;
 }

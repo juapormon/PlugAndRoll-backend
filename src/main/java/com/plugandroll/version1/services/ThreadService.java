@@ -2,10 +2,8 @@ package com.plugandroll.version1.services;
 
 import com.plugandroll.version1.dtos.GetThreadToCreateDTO;
 import com.plugandroll.version1.mappers.UserDTOConverter;
-import com.plugandroll.version1.models.Forum;
-import com.plugandroll.version1.models.Publication;
+import com.plugandroll.version1.models.*;
 import com.plugandroll.version1.models.Thread;
-import com.plugandroll.version1.models.UserEntity;
 import com.plugandroll.version1.repositories.ForumRepository;
 import com.plugandroll.version1.repositories.PublicationRepository;
 import com.plugandroll.version1.repositories.ThreadRepository;
@@ -73,7 +71,7 @@ public class ThreadService {
         Forum forum = this.forumRepository.findById(getThreadToCreateDTO.getForumId()).orElse(null);
 
         Thread newThread = new Thread(getThreadToCreateDTO.getTitle(),
-                getThreadToCreateDTO.getRating(),
+                0.0,
                 LocalDateTime.now(),
                 null,
                 UserDTOConverter.UserToGetUserDTO(me),
@@ -88,7 +86,7 @@ public class ThreadService {
 
         UserEntity me = this.userEntityRepository.findByUsername(principal.getUsername()).orElseThrow(ChangeSetPersister.NotFoundException::new);
         Thread threadToUpdate = this.threadRepository.findById(threadId).orElseThrow(ChangeSetPersister.NotFoundException::new);
-        if(me.getUsername().equals(threadToUpdate.getCreator().getUsername())||me.getRoles().contains("ADMIN")){
+        if(me.getUsername().equals(threadToUpdate.getCreator().getUsername())||me.getRoles().contains(TypeRol.ADMIN)){
             threadToUpdate.setCloseDate(LocalDateTime.now());
             this.threadRepository.save(threadToUpdate);
         }else{
@@ -101,7 +99,7 @@ public class ThreadService {
 
         UserEntity me = this.userEntityRepository.findByUsername(principal.getUsername()).orElseThrow(ChangeSetPersister.NotFoundException::new);
         Thread threadToDelete = this.threadRepository.findById(threadId).orElseThrow(ChangeSetPersister.NotFoundException::new);
-        if(me.getUsername().equals(threadToDelete.getCreator().getUsername())||me.getRoles().contains("ADMIN")){
+        if(me.getUsername().equals(threadToDelete.getCreator().getUsername())||me.getRoles().contains(TypeRol.ADMIN)){
             this.threadRepository.deleteById(threadId);
         }else{
             throw new UnauthorizedException();

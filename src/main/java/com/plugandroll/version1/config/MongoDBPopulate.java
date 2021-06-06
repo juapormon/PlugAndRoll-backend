@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,13 +24,16 @@ public class MongoDBPopulate {
     @Bean
     CommandLineRunner commandLineRunner(UserEntityRepository userEntityRepository, PublicationRepository publicationRepository,
                                         ForumRepository forumRepository, ThreadRepository threadRepository,
-                                        SpamWordRepository spamWordRepository) {
+                                        SpamWordRepository spamWordRepository, OfferRepository offerRepository,
+                                        ApplicationRepostiory applicationRepostiory) {
         return strings -> {
             userEntityRepository.deleteAll();
             publicationRepository.deleteAll();
             forumRepository.deleteAll();
             threadRepository.deleteAll();
             spamWordRepository.deleteAll();
+            offerRepository.deleteAll();
+            applicationRepostiory.deleteAll();
 
             /*================= USERS =================*/
 
@@ -37,7 +41,9 @@ public class MongoDBPopulate {
                     passwordEncoder.encode("mastermaster"),
                     "master@masterchef.com",
                     true,
-                    Stream.of(TypeRol.ADMIN, TypeRol.DM).collect(Collectors.toSet()));
+                    Stream.of(TypeRol.ADMIN, TypeRol.DM).collect(Collectors.toSet()),
+                    2.5,
+                    123);
 
             userEntityRepository.save(master);
 
@@ -45,7 +51,9 @@ public class MongoDBPopulate {
                     passwordEncoder.encode("player1player1"),
                     "player1@masterchef.com",
                     true,
-                    Stream.of(TypeRol.PLAYER).collect(Collectors.toSet()));
+                    Stream.of(TypeRol.PLAYER).collect(Collectors.toSet()),
+                    3.0,
+                    12);
 
             userEntityRepository.save(player1);
 
@@ -53,7 +61,9 @@ public class MongoDBPopulate {
                     passwordEncoder.encode("dm1dm1dm1dm1"),
                     "dm1@masterchef.com",
                     true,
-                    Stream.of(TypeRol.DM).collect(Collectors.toSet()));
+                    Stream.of(TypeRol.DM).collect(Collectors.toSet()),
+                    5.0,
+                    11);
 
             userEntityRepository.save(dm1);
 
@@ -71,20 +81,20 @@ public class MongoDBPopulate {
 
             /*================= THREAD =================*/
 
-            Thread thread1 = new Thread("Habeis visto lo bien que...", 5, LocalDateTime.of(2020,5,21,16,05,23),
-                    null, UserDTOConverter.UserToGetUserDTO(master), false, forum1);
+            Thread thread1 = new Thread("Habeis visto lo bien que...", 4.6, LocalDateTime.of(2020,5,21,16,05,23),
+                    LocalDateTime.of(2021,5,21,16,05,23), UserDTOConverter.UserToGetUserDTO(master), false, forum1);
 
-            Thread thread2 = new Thread("No tiene mucho sentido, no entres", 2, LocalDateTime.of(2020,5,21,16,05,23),
+            Thread thread2 = new Thread("No tiene mucho sentido, no entres", 2.0, LocalDateTime.of(2020,5,21,16,05,23),
                     null, UserDTOConverter.UserToGetUserDTO(master), false, forum3);
 
-            Thread thread3 = new Thread("solo los dms podemos verlo", 2, LocalDateTime.of(2020,5,21,16,05,23),
-                    null, UserDTOConverter.UserToGetUserDTO(master), false, forum2);
+            Thread thread3 = new Thread("solo los dms podemos verlo", 3.0, LocalDateTime.of(2020,5,21,16,05,23),
+                    LocalDateTime.of(2021,5,21,16,05,23), UserDTOConverter.UserToGetUserDTO(master), false, forum2);
 
-            Thread thread4 = new Thread("los no registrados no veran esto", 2, LocalDateTime.of(2020,5,21,16,05,23),
-                    null, UserDTOConverter.UserToGetUserDTO(master), true, forum4);
+            Thread thread4 = new Thread("los no registrados no veran esto", 5.0, LocalDateTime.of(2020,5,21,16,05,23),
+                    LocalDateTime.of(2021,5,21,16,05,23), UserDTOConverter.UserToGetUserDTO(master), true, forum4);
 
-            Thread thread5 = new Thread("Que palizaaaa", 2, LocalDateTime.of(2020,5,21,16,05,23),
-                    null, UserDTOConverter.UserToGetUserDTO(master), false, forum4);
+            Thread thread5 = new Thread("Que palizaaaa", 1.0, LocalDateTime.of(2020,5,21,16,05,23),
+                    LocalDateTime.of(2021,5,21,16,05,23), UserDTOConverter.UserToGetUserDTO(master), false, forum4);
 
             threadRepository.save(thread1);
             threadRepository.save(thread2);
@@ -166,6 +176,34 @@ public class MongoDBPopulate {
             spamWordRepository.saveAll(Lists.list(spam1, spam2, spam3, spam4, spam5,
                     spam6,spam7,spam8,spam9,spam10));
 
+            /*================= Offers =================*/
+
+            CoachingOffer offer1 = new CoachingOffer("Coaching in game for D&D- 1h",
+                    "It's going to be an hour coaching you how to play this game",
+                    CoachingType.DM, 10.00, UserDTOConverter.UserToGetUserDTO(master));
+            CoachingOffer offer2 = new CoachingOffer("I'll coach you if you let me",
+                    "It's going to be an hour coaching you how to play this game",
+                    CoachingType.PLAYER, 40.00,UserDTOConverter.UserToGetUserDTO(player1));
+            CoachingOffer offer3 = new CoachingOffer("Coach for begginers. Includes Spells, levels, items, etc.. You will be amazed",
+                    "It's going to be an hour coaching you how to play this game",
+                    CoachingType.PLAYER, 15.00, UserDTOConverter.UserToGetUserDTO(player1));
+            CoachingOffer offer4 = new CoachingOffer("Advanced Dms coaching",
+                    "It's going to be an hour coaching you how to play this game",
+                    CoachingType.DM, 10.00,UserDTOConverter.UserToGetUserDTO(dm1));
+
+
+            offerRepository.saveAll(Lists.list(offer1, offer2, offer3, offer4));
+
+
+            /*================= Applications =================*/
+
+            Application application1 = new Application(master.getUsername(), offer1, LocalDate.now(), false);
+            Application application2 = new Application(master.getUsername(), offer1, LocalDate.now(),true);
+            Application application3 = new Application(master.getUsername(), offer3, LocalDate.now(), false);
+            Application application4 = new Application(master.getUsername(), offer4, LocalDate.now(),false);
+
+
+            applicationRepostiory.saveAll(Lists.list(application1, application2, application3, application4));
         };
 
     }

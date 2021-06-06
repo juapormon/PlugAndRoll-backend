@@ -33,6 +33,8 @@ public class UserEntityService {
             throw new IllegalArgumentException("User already exists");
         user.setPassword(new BCryptPasswordEncoder(12).encode(user.getPassword()));
         user.setRoles(user.getRoles().stream().collect(Collectors.toSet()));
+        user.setRating(null);
+        user.setCoachedGames(0);
         this.userEntityRepository.save(user);
         return user;
     }

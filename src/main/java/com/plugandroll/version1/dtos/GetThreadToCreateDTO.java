@@ -14,7 +14,7 @@ public class GetThreadToCreateDTO {
 
     private String title;
 
-    private Integer rating;
+    private Double rating;
 
     private LocalDateTime openDate;
 
