@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class Thread extends BaseEntity{
     private static final long serialVersionUID = 88749523013034397L;
 
     @NotBlank
+    @Size(max=400)
     private String title;
 
     @Range(min = 0 , max = 5)
