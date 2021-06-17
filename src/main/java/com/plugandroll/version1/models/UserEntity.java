@@ -1,6 +1,7 @@
 package com.plugandroll.version1.models;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -41,6 +42,10 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @NotEmpty
     private Set<TypeRol> roles;
 
+    @Range(min = 0, max = 5)
+    private Double rating;
+
+    private Integer CoachedGames;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
