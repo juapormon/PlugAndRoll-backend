@@ -4,19 +4,28 @@ import com.plugandroll.version1.mappers.UserDTOConverter;
 import com.plugandroll.version1.models.*;
 import com.plugandroll.version1.models.Thread;
 import com.plugandroll.version1.repositories.*;
+import org.apache.commons.io.FileUtils;
 import org.assertj.core.util.Lists;
 import com.plugandroll.version1.models.TypeRol;
 import com.plugandroll.version1.models.UserEntity;
 import com.plugandroll.version1.repositories.RedBoxRepository;
 import com.plugandroll.version1.repositories.UserEntityRepository;
+import org.bson.internal.Base64;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -83,6 +92,21 @@ public class MongoDBPopulate {
             forumRepository.save(forum2);
             forumRepository.save(forum3);
             forumRepository.save(forum4);
+
+            /*================= RED BOX =================*/
+
+            RedBox r1 = new RedBox(
+                    "Initial Red Box",
+                    Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/story.txt"))),
+                    Arrays.asList(Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/village.jpg"))), Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/combatVillage.jpg"))), Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/corruptedForest.png"))), Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/dungeon.jpeg"))), Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/villageCenter.jpg")))),
+                    Arrays.asList(Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/ambient.mp3"))), Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/combat.mp3")))),
+                    Arrays.asList(Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/thug.png"))), Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/ghoul.png"))), Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/mayor.png")))),
+                    Arrays.asList(Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/5e_level_4_dragonborn_fighter.pdf"))), Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/5e_lvl_4_half_elf_bard_college_of_lore.pdf")))),
+                    Arrays.asList(Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/thugToken.png"))), Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/ghoulToken.png"))), Base64.encode(FileUtils.readFileToByteArray(new File("src/main/java/com/plugandroll/version1/config/InitialRedBoxes/RedBox1/mayorToken.png")))),
+                    UserDTOConverter.UserToGetUserDTO(master)
+            );
+
+            redBoxRepository.save(r1);
 
             /*================= THREAD =================*/
 
