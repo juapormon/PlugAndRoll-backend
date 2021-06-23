@@ -1,0 +1,36 @@
+Esta historia se basa en Faerun, que es el mundo en el que se centran casi todas las historias en DnD.
+La historia esta pensada para completarla en dos sesiones de juego.
+Para poder dirigir mejor la historia, recomendamos encarecidamente que se hayan leido antes las guias para DM y jugadores de la seccion de guias.
+Esta historia esta pensada para 2 jugadores de nivel 4. Si el DM decide cambiar el numero de jugadores o el nivel al que juegan esta historia debera ajustar los
+combates a dicho grupo.
+
+Primera sesion:
+    Nuestros jugadores, por razones a concretar por el DM, deberan encontrarse con un pueblo perdido en mitad de un bosque (como ejemplo puede ser que 
+    los personajes hayan llegado alli de camino a otra ciudad, aunque cualquier otra razon que el DM quiera puede valer).
+    En este pueblo (Mapa 1) podemos ver que es un pueblo no muy grande pero autosuficiente, con lugares como una taberna, mercado, casas...
+    Nuestros personajes, tras encontrarse y pasar la primera noche en la taberna, escucharan unos gritos que provienen de la parte de la zona residencial del pueblo. 
+    Una tirada de percepcion de 12 o más podrá hacerlos saber que se tratan de los gritos de un niño pequeño.
+    Si los personajes deciden acudir encontrarán que 3 matones han acorralado a un niño y le estan exigiendo que les de todo el dinero que lleve, aunque el niño 
+    asegura que no lleva nada encima. Si los personajes deciden ayudar al niño (Mapa 2 para el combate) este les podra contar que desde que el alcalde del pueblo 
+    (que parece ser la persona más poderosa del pueblo entero) desaparecio se han estado encontrando muchas personas mas que deciden robar, asaltar o incluso matar 
+    a los pueblerinos.
+    Para averiguar más sobre el caso los personajes deberan ir al ayuntamiento, donde podran ver a una secretaria que les dira que el ultimo lugar donde se fue el 
+    alcalde fue al bosque, donde parece ser que la corrupcion esta asolando el bosque.
+    Los personajes deberan ser guiados a la parte del bosque donde la corrupcion se está extendiendo, y alli veran que entre toda esa arboleda se encuentra un claro 
+    con un arbol en medio completamente corrupto (Mapa 3). Alli se encontrara el alcalde unido al arbol como si el arbol estuviese absorbiendo su energia vital 
+    para alimentarse. Al acercarse, los personajes tendran otro combate contra 2 ghuls, tras el cual los personajes podran "sacar" al alcalde del arbol y este les 
+    promete que les recompensara si le ayudan a llegar al ayuntamiento.
+Segunda sesion:
+    El alcalde al volver al pueblo le dira a los personajes que descansen por la noche y al dia siguiente vayan al ayuntamiento y alli les dara la recompensa por 
+    salvarle. A la mañana siguiente, al ir al ayuntamiento, los personajes veran que este esta completamente vacao, y al tocar la puerta del despacho principal del 
+    alcalde en el ayuntamiento entraran en un puzle que deberan resolver:
+        Cuando alguien toque la puerta narra que un portal se ha abierto y ha tragado a la mitad del grupo. A partir de esto separa al grupo en dos y procura que estos 
+        dos grupos no puedan comunicarse ni saber lo que pasa con el otro grupo mientras dura el puzle.
+        Los personajes acabaran todos en un "calabozo" (Mapa 4) y cada grupo vera a los compañeros que estan con ellos como siempre, pero el giro consiste en que 
+        cada grupo aparecera en una esquina del calabozo y vera al grupo contrario como espectros con aspecto amenazante. Si deciden pelear puedes alternar entre los 
+        grupos para simular el combate.
+        Para poder superar este puzle ambos grupos deberan pulsar a la vez un boton que solo vera dicho grupo en la habitacion y que se encuentra en el lado donde 
+        aparecio el grupo contrario.
+    Al terminar el puzle los personajes apareceran en mitad del pueblo con los aldeanos formando un circulo y mirandoles, y el alcalde con el grupo y gritando que 
+    el grupo sera el sacrificio de este año para la cosecha. La pelea final de esta historia consiste en derrotar al alcalde (Mapa 5) (Para los stats del alcalde 
+    se tendra en cuenta el enemigo "Knight", entendiendo que ahora el alcalde se ha cambiado y preparado para luchar).
