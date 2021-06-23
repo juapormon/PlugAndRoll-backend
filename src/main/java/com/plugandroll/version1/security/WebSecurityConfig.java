@@ -50,6 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/signup").permitAll()
                 .antMatchers("/redbox/findAll").permitAll()
                 .antMatchers("/forums/findForums").permitAll()
+                .antMatchers("/forums/*").permitAll()
+                .antMatchers("/threads/*").permitAll()
                 .antMatchers("/threads/findByForumNoAuth/*").permitAll()
                 .antMatchers("/publications/findByThreadNoAuth/*").permitAll()
                 .antMatchers("/spam/**").permitAll()
